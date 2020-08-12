@@ -24,13 +24,18 @@ export const TodoModal: React.FC<PropsType> = ({ visible, onCancel, todo, onSave
     }
   }
 
+  const cancelHandler = () => {
+    setText(todo.title)
+    onCancel()
+  }
+
   return (
     <Modal visible={visible} animationType='slide' transparent={false}>
       <View style={styles.container}>
         <TextInput onChangeText={setText} value={text} style={styles.input} placeholder='Введите название'/>
         <View style={styles.buttons}>
           <View>
-            <AppButton onPress={onCancel} color={THEME.DANGER_COLOR}>
+            <AppButton onPress={cancelHandler} color={THEME.DANGER_COLOR}>
               Отменить
             </AppButton>
           </View>

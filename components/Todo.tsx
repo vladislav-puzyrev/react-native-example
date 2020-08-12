@@ -10,6 +10,7 @@ type PropsType = {
 }
 
 export const Todo: React.FC<PropsType> = ({ todo, onRemove, onOpen }) => {
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}

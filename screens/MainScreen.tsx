@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { FlatList, Image, ListRenderItemInfo, StyleSheet, View, Dimensions } from 'react-native'
 import { AddTodo } from '../components/AddTodo'
 import { Todo } from '../components/Todo'
 import { TodoType } from '../types/types'
+import { todoContext } from '../context/todo/todoContext'
+import { screenContext } from '../context/screen/screenContext'
 
-type PropsType = {
-  todos: TodoType[]
-  addTodo: (title: string) => void
-  removeTodo: (id: string) => void
-  openTodo: (id: string) => void
-}
+export const MainScreen = () => {
+  const { todos, addTodo, removeTodo } = useContext(todoContext)
+  const { changeScreen } = useContext(screenContext)
 
-export const MainScreen: React.FC<PropsType> = ({ addTodo, todos, removeTodo, openTodo }) => {
   const [todoWidth, setTodoWidth] = useState(Dimensions.get('window').width - 40)
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export const MainScreen: React.FC<PropsType> = ({ addTodo, todos, removeTodo, op
       <FlatList
         data={todos}
         renderItem={
-          ({ item }: ListRenderItemInfo<TodoType>) => <Todo todo={item} onRemove={removeTodo} onOpen={openTodo}/>
+          ({ item }: ListRenderItemInfo<TodoType>) => <Todo todo={item} onRemove={removeTodo} onOpen={changeScreen}/>
         }
       />
     </View>

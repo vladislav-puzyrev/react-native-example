@@ -1,26 +1,23 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
-import { FontAwesome, AntDesign } from '@expo/vector-icons'
+import React, { useContext, useState } from 'react'
+import { Dimensions, StyleSheet, View, Text } from 'react-native'
+import { AntDesign, FontAwesome } from '@expo/vector-icons'
 import { THEME } from '../theme/theme'
 import { AppCard } from '../components/AppCard'
 import { TodoModal } from '../components/TodoModal'
-import { TodoType } from '../types/types'
 import { AppTextBold } from '../components/AppTextBold'
 import { AppButton } from '../components/AppButton'
+import { todoContext } from '../context/todo/todoContext'
+import { screenContext } from '../context/screen/screenContext'
 
-type PropsType = {
-  goBack: () => void
-  todo: TodoType
-  removeTodo: (id: string) => void
-  changeTodo: (id: string, title: string) => void
-}
-
-export const TodoScreen: React.FC<PropsType> = ({ goBack, todo, removeTodo, changeTodo }) => {
+export const TodoScreen = () => {
   const [modal, setModal] = useState(false)
+  const { todos, removeTodo, updateTodo } = useContext(todoContext)
+  const { todoId, changeScreen } = useContext(screenContext)
+  const todo = todos.find(todo => todo.id === todoId) as any
 
   return (
     <View>
-      <TodoModal onSave={changeTodo} todo={todo} visible={modal} onCancel={() => setModal(false)}/>
+      <TodoModal onSave={updateTodo} todo={todo} visible={modal} onCancel={() => setModal(false)}/>
 
       <AppCard styles={styles.card}>
         <AppTextBold style={styles.title}>{todo.title}</AppTextBold>
@@ -30,7 +27,7 @@ export const TodoScreen: React.FC<PropsType> = ({ goBack, todo, removeTodo, chan
       </AppCard>
       <View style={styles.buttons}>
         <View style={styles.button}>
-          <AppButton color={THEME.GREY_COLOR} onPress={goBack}>
+          <AppButton color={THEME.GREY_COLOR} onPress={() => changeScreen(null)}>
             <AntDesign name='back' size={20} color='#fff'/>
           </AppButton>
         </View>
